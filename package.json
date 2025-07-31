@@ -1,13 +1,13 @@
 {
-  "name": "athletic-scraper",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "postinstall": "npx puppeteer browsers install chrome",
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "puppeteer": "^22.8.2"
-  }
+    "name": "athletic-scraper",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "postinstall": "npx puppeteer install chrome",
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "puppeteer": "^22.8.2"
+    }
 }
