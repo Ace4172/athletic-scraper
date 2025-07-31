@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: athletic-scraper
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: PUPPETEER_CACHE_DIR
+        value: /tmp/puppeteer-cache

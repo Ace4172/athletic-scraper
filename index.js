@@ -2,6 +2,8 @@ const puppeteer = require('puppeteer');
 const express = require('express');
 const app = express();
 
+process.env.PUPPETEER_CACHE_DIR = '/tmp/puppeteer-cache';
+
 app.get('/scrape', async (req, res) => {
   const aid = req.query.aid;
   if (!aid) return res.status(400).send("Missing 'aid' query parameter");
@@ -10,9 +12,9 @@ app.get('/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        executablePath: puppeteer.executablePath()
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: puppeteer.executablePath(),
     });
 
     const page = await browser.newPage();
@@ -33,18 +35,17 @@ app.get('/scrape', async (req, res) => {
         }
       });
 
-      return meets.slice(0, 5); // limit to 5 most recent
+      return meets.slice(0, 5);
     });
 
     await browser.close();
     res.json({ aid, results: data });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Scraping failed', message: err.message });
   }
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Scraper running on http://0.0.0.0:${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Scraper running on port ${PORT}`));
