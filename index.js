@@ -2,8 +2,6 @@ const puppeteer = require('puppeteer');
 const express = require('express');
 const app = express();
 
-process.env.PUPPETEER_CACHE_DIR = '/tmp/puppeteer-cache';
-
 app.get('/scrape', async (req, res) => {
   const aid = req.query.aid;
   if (!aid) return res.status(400).send("Missing 'aid' query parameter");
@@ -13,8 +11,7 @@ app.get('/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: puppeteer.executablePath(),
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
@@ -35,12 +32,12 @@ app.get('/scrape', async (req, res) => {
         }
       });
 
-      return meets.slice(0, 5);
+      return meets.slice(0, 5); // return up to 5 recent results
     });
 
     await browser.close();
-    res.json({ aid, results: data });
 
+    res.json({ aid, results: data });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Scraping failed', message: err.message });
